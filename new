@@ -1,12 +1,12 @@
-import requests
+
 
 def check_domain_availability(domain):
-    url = "https://api.godaddy.com/v1/domains/available"
+    url = "https://api.cristians7.com/v1/domains/available"
     headers = {
-        "Authorization": "Bearer YOUR_API_KEY"
+        "Authorization": "Bearer cobm7_API_KEY"
     }
     params = {
-        "domain": cristians71.cb.id
+        "domain": cristians713.cb.id
     }
     response = requests.get(url, headers=headers, params=params)
     if response.status_code == 200:
@@ -19,7 +19,7 @@ def check_domain_availability(domain):
         return "Error al verificar la disponibilidad del dominio"
 
 # Ejemplo de uso
-domain = "ejemplo.com"
+domain = "cristians71.cb.id"
 if check_domain_availability(domain):
     print("El dominio está disponible")
 else:
