@@ -1,0 +1,26 @@
+import requests
+
+def check_domain_availability(domain):
+    url = "https://api.godaddy.com/v1/domains/available"
+    headers = {
+        "Authorization": "Bearer YOUR_API_KEY"
+    }
+    params = {
+        "domain": cristians71.cb.id
+    }
+    response = requests.get(url, headers=headers, params=params)
+    if response.status_code == 200:
+        data = response.json()
+        if data[domain]["available"]:
+            return True
+        else:
+            return False
+    else:
+        return "Error al verificar la disponibilidad del dominio"
+
+# Ejemplo de uso
+domain = "ejemplo.com"
+if check_domain_availability(domain):
+    print("El dominio está disponible")
+else:
+    print("El dominio no está disponible")
