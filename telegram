@@ -1,0 +1,148 @@
+**Ejemplo de README.md:**
+```
+# Telegram Bot Proyecto
+Proyecto de bot de Telegram para [breve descripción de tu proyecto]
+## Tecnologías utilizadas
+* Node.js
+* Telegram Bot API
+## Instalación
+1. Clona este repositorio
+2. Instala dependencias con `npm install`
+3. Crea un archivo `.env` con tu token de Telegram
+## Código del Bot
+Ver archivo `bot.js`
+```
+**Código inicial de bot.js:**
+```javascript
+const TelegramBot = require('node-telegram-bot-api');
+const token = process.env.TELEGRAM_TOKEN;
+const bot = new TelegramBot(token, {polling: true});
+bot.onText(/\/start/, (msg) => {
+  bot.sendMessage(msg.chat.id, 'Bienvenido a mi bot!');
+});
+bot.onText(/\/help/, (msg) => {
+  bot.sendMessage(msg.chat.id, 'Puedes usar los siguientes comandos: /start, /help');
+});
+``` 
+
+```javascript
+bot.onText(/\/info/, (msg) => {
+  const texto = `Nombre: Mi Bot
+Versión: 1.0
+Autor: Tu Nombre`;
+  bot.sendMessage(msg.chat.id, texto);
+});
+```
+
+```javascript
+bot.onText(/\/contacto/, (msg) => {
+  const texto = `Email: tuemail@example.com
+Teléfono: 1234567890
+Sitio web: tuySitioWeb.com`;
+  bot.sendMessage(msg.chat.id, texto);
+});
+```
+
+```javascript
+bot.onText(/\/hola/, (msg) => {
+  const texto = `Hola ${msg.from.first_name}! ¿Cómo estás?`;
+  bot.sendMessage(msg.chat.id, texto);
+});
+``
+```javascript
+bot.onText(/\/chiste/, (msg) => {
+  const chistes = [
+    "¿Por qué la computadora fue al doctor? Tenía un virus!",
+    "¿Qué le dice un semáforo a otro? No me mires, que me estoy cambiando",
+    "¿Por qué el programador se fue al gimnasio? Quería tener más bytes"
+  ];
+  const chisteAleatorio = chistes[Math.floor(Math.random() * chistes.length)];
+  bot.sendMessage(msg.chat.id, chisteAleatorio);
+	});
+Excelente idea, podemos agregar un menú para aprender sobre lenguajes de programación. 
+Propongo agregar las siguientes opciones:
+**Aprender Programación**
+1. **Python** (/python)
+ - Introducción
+ - Sintaxis básica
+ - Ejercicios
+2. **JavaScript** (/javascript)
+ - Introducción
+ - Sintaxis básica
+ - Ejercicios
+3. **Java** (/java)
+ - Introducción
+ - Sintaxis básica
+ - Ejercicios
+4. **Regresar** (/menu)
+Y también podemos agregar un comando `/programacion` para mostrar este menú.
+Aquí te dejo el código para agregar esta sección:
+```javascript
+bot.onText(/\/programacion/, (msg) => {
+  const textoProg = `Seleccione un lenguaje:`
+  const opcionesProg = {
+    reply_markup: {
+      keyboard: [
+        ['/python'], 
+        ['/javascript'], 
+        ['/java'], 
+        ['/menu']
+      ]
+    }
+  };
+  bot.sendMessage(msg.chat.id, textoProg, opcionesProg);
+});
+```
+```javascript
+bot.onText(/\/python/, (msg) => {
+  const textoPython = `Python es un lenguaje de programación interpretado.
+  ¿Qué deseas aprender? 
+  1. /python_intro - Introducción
+  2. /python_sintaxis - Sintaxis básica
+  3. /python_ejercicios - Ejercicios`
+  const opcionesPython = {
+    reply_markup: {
+      keyboard: [
+        ['/python_intro'], 
+        ['/python_sintaxis'], 
+        ['/python_ejercicios'], 
+        ['/programacion']
+      ]
+    }
+  };
+  bot.sendMessage(msg.chat.id, textoPython, opcionesPython);
+});
+```
+**1. Instalar dependencias:**
+```bash
+npm install gtts google-translate-tts
+```
+**2. Agregar código para síntesis de voz:**
+```javascript
+const gtts = require('gtts');
+bot.onText(/\/hablar (.+)/, (msg, match) => {
+  const texto = match[1];
+  const tts = new gtts(texto, 'es');
+  tts.save('audio.mp3', (err) => {
+    if (err) throw err;
+    bot.sendAudio(msg.chat.id, 'audio.mp3');
+  });
+});
+```
+**3. Agregar comando `/hablar` al menú:**
+```javascript
+bot.onText(/\/menu/, (msg) => {
+  const textoMenu = `Seleccione una opción:`
+  const opcionesMenu = {
+    reply_markup: {
+      keyboard: [
+        ['/info'], 
+        ['/hablar'], // Nuevo comando
+        ['/programacion'], 
+        ['/menu']
+      ]
+    }
+  };
+  bot.sendMessage(msg.chat.id, textoMenu, opcionesMenu);
+})
+```
