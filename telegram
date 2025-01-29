@@ -145,4 +145,48 @@ bot.onText(/\/menu/, (msg) => {
   };
   bot.sendMessage(msg.chat.id, textoMenu, opcionesMenu);
 })
+1. `speech_recognition` para reconocer la voz del usuario.
+2. `pyttsx3` para sintetizar la voz del bot.
+Tu código:
+* Inicializa el reconocedor de voz y el sintetizador de voz.
+* Define una función `procesar_voz` para reconocer la entrada de voz y realizar acciones correspondientes.
+* Define una función `escuchar_voz` para escuchar la entrada de voz y procesarla con `procesar_voz`.
+Para integrarlo con el bot de Telegram, necesitaremos:
+1. Modificar el código para que se ejecute dentro del bot.
+2. Utilizar la biblioteca `pytelegrambotapi` para interactuar con el bot.
+Aquí te muestro cómo podríamos integrarlo:
+```python
+import telebot
+from telebot import types
+import speech_recognition as sr
+import pyttsx3
+# Inicializa el bot
+bot = telebot.TeleBot('TU_TOKEN_TELEGRAM')
+# Inicializa el reconocedor de voz y el sintetizador de voz
+r = sr.Recognizer()
+engine = pyttsx3.init()
+# Función para procesar la entrada de voz
+def procesar_voz(audio):
+    texto = r.recognize_google(audio, language='es-ES')
+    if texto == 'hola':
+        bot.reply_to(audio, 'Hola, ¿cómo estás?')
+    elif texto == 'adiós':
+        bot.reply_to(audio, 'Adiós, hasta luego')
+# Función para escuchar la entrada de voz
+def escuchar_voz(message):
+    file_id = message.voice.file_id
+    file = bot.get_file(file_id)
+    file_path = file.file_path
+    audio = bot.download_file(file_path)
+    with sr.AudioFile(audio) as source:
+        audio_data = r.record(source)
+        procesar_voz(audio_data)
+# Handler para el comando de voz
+@bot.message_handler(content_types=['voice'])
+def voice_message(message):
+    escuchar_voz(message)
+# Iniciar el bot
+bot.polling()
+```
+
 ```
